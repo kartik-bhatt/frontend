@@ -1,18 +1,21 @@
 # Stage 1: Build the app
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+
 COPY . .
 RUN npm run build
 
-# Stage 2: Serve with `serve` (static file server)
-FROM node:18-alpine
+# Stage 2: Serve the app using nginx
+FROM nginx:alpine
 
-WORKDIR /app
-RUN npm install -g serve
-COPY --from=build /app/dist ./dist
+# Copy the Vite build output to nginx's web directory
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy custom nginx config (optional, if needed)
+# COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 8086
-CMD ["serve", "-s", "dist", "-l", "8086"]
+CMD ["nginx", "-g", "daemon off;"]
