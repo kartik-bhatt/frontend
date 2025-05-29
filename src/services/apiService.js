@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Use environment variables if available or fallback to localhost
-const API_BASE_URL = 'http://10.226.50.201:8080';
+const API_BASE_URL = 'http://172.31.90.11:8083';
 
 // Define DEBUG variable - this is needed for conditional logging
 const DEBUG = process.env.NODE_ENV !== 'production';
